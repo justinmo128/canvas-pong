@@ -69,32 +69,57 @@ function drawGameElements() {
 function movePaddles() {
     // P1 movement
     if (p1Up) {
-        paddle1.y += -3;
+        paddle1.y += -7;
     }
     if (p1Down) {
-        paddle1.y += 3;
+        paddle1.y += 7;
+    }
+    // Check if paddle hits top/bottom
+    if (paddle1.y >= cnv.height - 50) {
+        paddle1.y = cnv.height - 50
+    } else if (paddle1.y <= -50) {
+        paddle1.y = -50;
     }
     // P2 movement
     if (p2Up) {
-        paddle2.y += -3;
+        paddle2.y += -7;
     }
     if (p2Down) {
-        paddle2.y += 3;
+        paddle2.y += 7;
+    }
+    // Check if paddle hits top/bottom
+    if (paddle2.y >= cnv.height - 50) {
+        paddle2.y = cnv.height - 50
+    } else if (paddle2.y <= -50) {
+        paddle2.y = -50;
     }
 }
 
 function moveBall() {
-    // Check if the ball hits a paddle, then send it
-    // at a random angle.
-    if (ball.x <= 60 && ball.y >= paddle1.y && ball.y <= paddle1.y + 100) {
-        ball.dir = true;
-    } else if (ball.x >= 890 && ball.y >= paddle2.y && ball.y <= paddle2.y + 100) {
-        ball.dir = false;
+    console.log(ball.x)
+    // Increase ball speed
+    ball.speed += 0.0001;
+    // Check if the ball hits a paddle, then send it at a random angle.
+    if (ball.x <= 60 && ball.x >= 40 && ball.y >= paddle1.y - 10 && ball.y <= paddle1.y + 50 ||
+        ball.x >= 890 && ball.x <= 910 && ball.y >= paddle2.y - 10 && ball.y <= paddle2.y + 50) {
+        ball.dir = !ball.dir;
+        ball.angle = Math.random() * 5;
+    } else if (ball.x <= 60 && ball.x >= 55  && ball.y >= paddle1.y + 50 && ball.y <= paddle1.y + 100 ||
+        ball.x >= 890 && ball.x <= 895 && ball.y >= paddle2.y + 50 && ball.y <= paddle2.y + 100) {
+        ball.dir = !ball.dir;
+        ball.angle = Math.random() * -5;
     }
+    // Check if the ball hits the top or bottom, then send it at the opposite of its current angle.
+    if (ball.y <= 0 || ball.y >= 710) {
+        ball.angle *= -1;
+    }
+    // Move ball
     if (ball.dir) {
-        ball.x += 3;
+        ball.x += ball.speed;
+        ball.y += ball.angle;
     } else {
-        ball.x += -3;
+        ball.x += ball.speed * -1;
+        ball.y += ball.angle;
     }
 }
 
@@ -110,12 +135,14 @@ function checkScore() {
 
 function ballReset() {
     gameState = "scorePause";
+    speedIncrement = p1Score + p2Score;
     if (ball.dir === true) {
         ball = {
-            x: 60,
+            x: 65,
             y: 50 + paddle1.y,
             angle: ball.angle,
             dir: ball.dir,
+            speed: 7 + speedIncrement,
         }
     } else {
         ball = {
@@ -123,6 +150,7 @@ function ballReset() {
             y: 50 + paddle2.y,
             angle: ball.angle,
             dir: ball.dir,
+            speed: 7 + speedIncrement,
         }
     }
     setTimeout(() => {gameState = "gameLoop";}, 2000);

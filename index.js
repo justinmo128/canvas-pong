@@ -21,8 +21,9 @@ let paddle2 = {
 let ball = {
     x: 475,
     y: 355,
-    angle: 0,
+    angle: Math.random(),
     dir: false,
+    speed: 7,
 };
 let p1Score = 0;
 let p2Score = 0;
