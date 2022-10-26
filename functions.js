@@ -19,6 +19,12 @@ function startScreen() {
     ctx.fillText(" ng", 480, 100);
     ctx.font = "30px Roboto";
     ctx.fillText(" to start", 480, 500);
+    console.log("start");
+}
+
+
+function startGame() {
+    gameState = "gameloop"
 }
 
 function gameLoop() {
@@ -27,6 +33,7 @@ function gameLoop() {
     checkScore();
     drawMainComponents();
     drawGameElements();
+    console.log("gameloop");
 }
 
 function drawMainComponents() {
@@ -148,6 +155,7 @@ function winScreen() {
         ctx.fillText("P2 WIN", 720, 360);
         setTimeout(reset, 5000);
     }
+    console.log("winscreen");
 }
 
 function reset() {
