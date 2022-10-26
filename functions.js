@@ -142,13 +142,13 @@ function winScreen() {
         ctx.font = "50px Roboto";
         ctx.fillStyle = "white";
         ctx.fillText("P1 WIN", 240, 360);
-        setTimeout(() => {p1Score = 0; gameState = "start";}, 5000);
+        setTimeout(() => {p1Score = 0; p2Score = 0; gameState = "start";}, 5000);
     } else if (p2Score === 5) {
         ctx.textAlign = "center";
         ctx.font = "50px Roboto";
         ctx.fillStyle = "white";
         ctx.fillText("P2 WIN", 720, 360);
-        setTimeout(() => {gameState = "start";}, 5000);
+        setTimeout(() => {p1Score = 0; p2Score = 0; gameState = "start";}, 5000);
     }
 }
 
