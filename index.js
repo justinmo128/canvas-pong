@@ -37,6 +37,8 @@ function draw() {
         startScreen();
     } else if (gameState === "gameLoop") {
         gameLoop();
+    } else if (gameState === "win") {
+        winScreen();
     }
     requestAnimationFrame(draw);
 }
