@@ -100,12 +100,12 @@ function moveBall() {
     // Increase ball speed
     ball.speed += 0.0001;
     // Check if the ball hits a paddle, then send it at a random angle.
-    if (ball.x <= 60 && ball.x >= 40 && ball.y >= paddle1.y - 10 && ball.y <= paddle1.y + 50 ||
-        ball.x >= 890 && ball.x <= 910 && ball.y >= paddle2.y - 10 && ball.y <= paddle2.y + 50) {
+    if (ball.x <= 60 && ball.x >= 50 && ball.y >= paddle1.y - 10 && ball.y <= paddle1.y + 50 ||
+        ball.x >= 890 && ball.x <= 900 && ball.y >= paddle2.y - 10 && ball.y <= paddle2.y + 50) {
         ball.dir = !ball.dir;
         ball.angle = Math.random() * 5;
-    } else if (ball.x <= 60 && ball.x >= 55  && ball.y >= paddle1.y + 50 && ball.y <= paddle1.y + 100 ||
-        ball.x >= 890 && ball.x <= 895 && ball.y >= paddle2.y + 50 && ball.y <= paddle2.y + 100) {
+    } else if (ball.x <= 60 && ball.x >= 50  && ball.y >= paddle1.y + 50 && ball.y <= paddle1.y + 100 ||
+        ball.x >= 890 && ball.x <= 900 && ball.y >= paddle2.y + 50 && ball.y <= paddle2.y + 100) {
         ball.dir = !ball.dir;
         ball.angle = Math.random() * -5;
     }
