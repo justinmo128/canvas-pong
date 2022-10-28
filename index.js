@@ -5,28 +5,37 @@ cnv.width = 960;
 cnv.height = 720;
 
 // Global Variables
-let gameState = "start";
 let lastFrameOccurence;
 let currentTime;
 let p1Up;
 let p1Down;
 let p2Up;
 let p2Down;
+let gameState;
+let p1Score;
+let p2Score;
 let paddle1 = {
+    x: 50,
     y: 310,
+    w: 10,
+    h: 100,
 }
 let paddle2 = {
+    x: 900,
     y: 310,
+    w: 10,
+    h: 100,
 }
 let ball = {
     x: 475,
     y: 355,
-    angle: Math.random() * 2,
+    size: 10,
     dir: false,
     speed: 7,
+    degree: 0,
+    rise: 0,
 };
-let p1Score = 0;
-let p2Score = 0;
+reset();
 
 
 // Draw Function

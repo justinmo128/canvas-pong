@@ -19,7 +19,6 @@ function startScreen() {
     ctx.fillText(" ng", 480, 100);
     ctx.font = "30px Roboto";
     ctx.fillText(" to start", 480, 500);
-    console.log("start");
 }
 
 
@@ -33,7 +32,6 @@ function gameLoop() {
     checkScore();
     drawMainComponents();
     drawGameElements();
-    console.log("gameloop");
 }
 
 function drawMainComponents() {
@@ -65,9 +63,9 @@ function drawMainComponents() {
 function drawGameElements() {
     ctx.fillStyle = "white";
     // Paddles and ball
-    ctx.fillRect(50, paddle1.y, 10, 100);
-    ctx.fillRect(900, paddle2.y, 10, 100);
-    ctx.fillRect(ball.x, ball.y, 10, 10);
+    ctx.fillRect(paddle1.x, paddle1.y, paddle1.w, paddle1.h);
+    ctx.fillRect(paddle2.x, paddle2.y, paddle2.w, paddle2.h);
+    ctx.fillRect(ball.x, ball.y, ball.size, ball.size);
     // Score
     ctx.textAlign = "center";
     ctx.font = "60px Roboto";
@@ -105,60 +103,63 @@ function movePaddles() {
 }
 
 function moveBall() {
-    console.log(ball.x)
-    // Increase ball speed
-    ball.speed += 0.0001;
     // Check if the ball hits a paddle, then send it at a random angle.
-    if (ball.x <= 60 && ball.x >= 40 && ball.y >= paddle1.y - 10 && ball.y <= paddle1.y + 50 ||
-        ball.x >= 890 && ball.x <= 910 && ball.y >= paddle2.y - 10 && ball.y <= paddle2.y + 50) {
+    if (
+        ball.x < paddle1.x + paddle1.w && // Right side
+        ball.x + ball.size > paddle1.x && // Left side
+        ball.y > paddle1.y - ball.size && // Top side
+        ball.y < paddle1.y + paddle1.h || // Bottom side
+        ball.x < paddle2.x + paddle2.w && // Right side
+        ball.x + ball.size > paddle2.x && // Left side
+        ball.y > paddle2.y - ball.size && // Top side
+        ball.y < paddle2.y + paddle2.h // Bottom side
+    ) {
         ball.dir = !ball.dir;
-        ball.angle = Math.random() * 2;
+        ball.degree = Math.random() * (70 + 70) - 70;
+        ball.rise = Math.tan(ball.degree * Math.PI / 180) * ball.speed;
         ball.speed += 0.1;
     }
-    // Check if the ball hits the top or bottom, then send it at the opposite of its current angle.
-    if (ball.y <= 0 || ball.y >= 710) {
-        ball.angle *= -1;
+    // Check if the ball hits the top or bottom of the screen, then send it at the opposite of its current angle.
+    if (ball.y < 0 || ball.y > cnv.height - ball.size) {
+        ball.rise *= -1;
     }
     // Move ball
     if (ball.dir) {
         ball.x += ball.speed;
-        ball.y += ball.angle * ball.speed; // Pretty sure this angle calculation is inaccurate but whatever
     } else {
-        ball.x += ball.speed * -1;
-        ball.y += ball.angle * ball.speed; // Something something rise over run
+        ball.x -= ball.speed;
     }
+    ball.y -= ball.rise;
 }
 
 function checkScore() {
-    if (ball.x <= 30) {
+    if (ball.x < 0 - ball.size) {
         p2Score++;
         ballReset();
-    } else if (ball.x >= 920) {
+    } else if (ball.x > cnv.width) {
         p1Score++;
         ballReset();
     }
     if (p1Score === 5 || p2Score === 5) {
         gameState = "win";
+        setTimeout(reset, 5000);
     }
 }
 
 function winScreen() {
     drawMainComponents();
     drawGameElements();
-    if (p1Score === 5) {
+    if (p2Score < 5) {
         ctx.textAlign = "center";
         ctx.font = "50px Roboto";
         ctx.fillStyle = "white";
         ctx.fillText("P1 WIN", 240, 360);
-        setTimeout(reset, 5000);
-    } else if (p2Score === 5) {
+    } else if (p1Score < 5) {
         ctx.textAlign = "center";
         ctx.font = "50px Roboto";
         ctx.fillStyle = "white";
         ctx.fillText("P2 WIN", 720, 360);
-        setTimeout(reset, 5000);
     }
-    console.log("winscreen");
 }
 
 function reset() {
@@ -166,38 +167,45 @@ function reset() {
     p1Score = 0; 
     p2Score = 0;
     paddle1 = {
+        x: 50,
         y: 310,
+        w: 10,
+        h: 100,
     };
     paddle2 = {
+        x: 900,
         y: 310,
+        w: 10,
+        h: 100,
     };
     ball = {
         x: 475,
         y: 355,
-        angle: Math.random(),
+        size: 10,
         dir: false,
         speed: 7,
+        degree: 0,
+        rise: 0,
     };
 }
 
 function ballReset() {
     gameState = "";
     if (ball.dir) {
-        ball = {
-            x: 65,
-            y: 45 + paddle1.y,
-            angle: ball.angle,
-            dir: ball.dir,
-            speed: 7,
-        }
+        ball.x = 65;
+        ball.y = paddle1.y + paddle1.h / 2 - ball.size / 2;
     } else {
-        ball = {
-            x: 870,
-            y: 45 + paddle2.y,
-            angle: ball.angle,
-            dir: ball.dir,
-            speed: 7,
-        }
+        ball.x = 885;
+        ball.y = paddle2.y + paddle2.h / 2 - ball.size / 2;
+    }
+    ball = {
+        x: ball.x,
+        y: ball.y,
+        size: 10,
+        dir: ball.dir,
+        speed: 7,
+        degree: ball.degree,
+        rise: ball.rise,
     }
     setTimeout(() => {gameState = "gameLoop";}, 2000);
 }
