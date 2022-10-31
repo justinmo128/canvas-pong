@@ -6,6 +6,7 @@ cnv.height = 720;
 
 // Global Variables
 let lastFrameOccurence;
+let startTime;
 let currentTime;
 let p1Up;
 let p1Down;
@@ -45,9 +46,12 @@ function draw() {
     if (gameState === "start") {
         startScreen();
     } else if (gameState === "gameLoop") {
+        console.log(startTime);
         gameLoop();
     } else if (gameState === "win") {
         winScreen();
+    } else if (gameState === "tie") {
+        bruhScreen();
     }
     requestAnimationFrame(draw);
 }
@@ -57,6 +61,7 @@ window.addEventListener("keydown", (e) => {
     let keyPressed = e.key;
     if (keyPressed === "Enter" && gameState === "start") {
         gameState = "gameLoop";
+        startTime = performance.now();
     }
     if (keyPressed === "w") {
         p1Up = true;

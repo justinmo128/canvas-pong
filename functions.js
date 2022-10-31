@@ -27,9 +27,11 @@ function startGame() {
 }
 
 function gameLoop() {
+    // Logic
     movePaddles();
     moveBall();
     checkScore();
+    // Drawing
     drawMainComponents();
     drawGameElements();
 }
@@ -82,10 +84,10 @@ function movePaddles() {
         paddle1.y += 10;
     }
     // Check if paddle hits top/bottom
-    if (paddle1.y >= cnv.height - 50) {
-        paddle1.y = cnv.height - 50
-    } else if (paddle1.y <= -50) {
-        paddle1.y = -50;
+    if (paddle1.y >= cnv.height - paddle1.h) {
+        paddle1.y = cnv.height - paddle1.h
+    } else if (paddle1.y <= 0) {
+        paddle1.y = 0;
     }
     // P2 movement
     if (p2Up) {
@@ -95,10 +97,10 @@ function movePaddles() {
         paddle2.y += 7;
     }
     // Check if paddle hits top/bottom
-    if (paddle2.y >= cnv.height - 50) {
-        paddle2.y = cnv.height - 50
-    } else if (paddle2.y <= -50) {
-        paddle2.y = -50;
+    if (paddle2.y >= cnv.height - paddle2.h) {
+        paddle2.y = cnv.height - paddle2.h
+    } else if (paddle2.y <= 0) {
+        paddle2.y = 0;
     }
 }
 
@@ -144,6 +146,10 @@ function checkScore() {
         gameState = "win";
         setTimeout(reset, 5000);
     }
+    if (currentTime - startTime >= 90000 && p1Score < 5 && p2Score < 5) {
+        gameState = "tie";
+        setTimeout(reset, 5000);
+    }
 }
 
 function winScreen() {
@@ -160,6 +166,15 @@ function winScreen() {
         ctx.fillStyle = "white";
         ctx.fillText("P2 WIN", 720, 360);
     }
+}
+
+function bruhScreen() {
+    drawMainComponents();
+    drawGameElements();
+    ctx.textAlign = "center";
+    ctx.font = "50px Roboto";
+    ctx.fillStyle = "white";
+    ctx.fillText("bruh", 480, 360);
 }
 
 function reset() {
