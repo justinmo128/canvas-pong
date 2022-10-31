@@ -6,7 +6,7 @@ cnv.height = 720;
 
 // Global Variables
 let lastFrameOccurence;
-let startTime;
+let roundStartTime;
 let currentTime;
 let p1Up;
 let p1Down;
@@ -61,7 +61,7 @@ window.addEventListener("keydown", (e) => {
     let keyPressed = e.key;
     if (keyPressed === "Enter" && gameState === "start") {
         gameState = "gameLoop";
-        startTime = performance.now();
+        roundStartTime = performance.now();
     }
     if (keyPressed === "w") {
         p1Up = true;

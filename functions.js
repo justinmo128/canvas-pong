@@ -146,7 +146,7 @@ function checkScore() {
         gameState = "win";
         setTimeout(reset, 5000);
     }
-    if (currentTime - startTime >= 90000 && p1Score < 5 && p2Score < 5) {
+    if (currentTime - roundStartTime >= 90000 && p1Score < 5 && p2Score < 5) {
         gameState = "tie";
         setTimeout(reset, 5000);
     }
@@ -206,6 +206,7 @@ function reset() {
 
 function ballReset() {
     gameState = "";
+    roundStartTime = performance.now();
     if (ball.dir) {
         ball.x = 65;
         ball.y = paddle1.y + paddle1.h / 2 - ball.size / 2;
