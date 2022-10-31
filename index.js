@@ -46,7 +46,6 @@ function draw() {
     if (gameState === "start") {
         startScreen();
     } else if (gameState === "gameLoop") {
-        console.log(startTime);
         gameLoop();
     } else if (gameState === "win") {
         winScreen();
