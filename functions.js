@@ -221,7 +221,7 @@ function ballReset() {
         dir: ball.dir,
         speed: 7,
         degree: ball.degree,
-        rise: ball.rise,
+        rise: 0.1,
     }
     setTimeout(() => {gameState = "gameLoop";}, 2000);
 }
