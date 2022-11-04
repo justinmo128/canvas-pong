@@ -10,9 +10,6 @@ let health = 100;
 // Draw Function
 window.addEventListener("load", draw);
 function draw() {
-    // Background
-    ctx.fillStyle = "rgb(0,0,0)";
-    ctx.fillRect(0, 0, cnv.width, cnv.height);
     // Health bar
     ctx.fillStyle = "red";
     ctx.fillRect(0, 680, 960, 40)
