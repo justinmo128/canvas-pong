@@ -38,21 +38,28 @@ let ball = {
 };
 reset();
 
-
 // Draw Function
 window.addEventListener("load", draw);
 function draw() {
     currentTime = performance.now();
     if (gameState === "start") {
         startScreen();
-    } else if (gameState === "gameLoop") {
-        gameLoop();
+    } else if (gameState === "gameLoop" || gameState === "pause") {
+        gameDraw();
     } else if (gameState === "win") {
         winScreen();
     } else if (gameState === "tie") {
         bruhScreen();
     }
-    requestAnimationFrame(draw);
+    setTimeout(draw, 1);
+}
+
+window.addEventListener("load", logic);
+function logic() {
+    if (gameState === "gameLoop") {
+        gameLogic();
+    }
+    setTimeout(logic, 40/3);
 }
 
 // Key down handler

@@ -21,19 +21,15 @@ function startScreen() {
     ctx.fillText(" to start", 480, 500);
 }
 
-
-function startGame() {
-    gameState = "gameloop"
+function gameDraw() {
+    drawMainComponents();
+    drawGameElements();
 }
 
-function gameLoop() {
-    // Logic
+function gameLogic() {
     movePaddles();
     moveBall();
     checkScore();
-    // Drawing
-    drawMainComponents();
-    drawGameElements();
 }
 
 function drawMainComponents() {
@@ -107,14 +103,14 @@ function movePaddles() {
 function moveBall() {
     // Check if the ball hits a paddle, then send it at a random angle.
     if (
-        ball.x < paddle1.x + paddle1.w && // Right side
-        ball.x + ball.size > paddle1.x && // Left side
-        ball.y > paddle1.y - ball.size && // Top side
-        ball.y < paddle1.y + paddle1.h || // Bottom side
-        ball.x < paddle2.x + paddle2.w && // Right side
-        ball.x + ball.size > paddle2.x && // Left side
-        ball.y > paddle2.y - ball.size && // Top side
-        ball.y < paddle2.y + paddle2.h // Bottom side
+        ball.x < paddle1.x + paddle1.w && // 1Right side
+        ball.x + ball.size > paddle1.x && // 1Left side
+        ball.y > paddle1.y - ball.size && // 1Top side
+        ball.y < paddle1.y + paddle1.h || // 1Bottom side
+        ball.x < paddle2.x + paddle2.w && // 2Right side
+        ball.x + ball.size > paddle2.x && // 2Left side
+        ball.y > paddle2.y - ball.size && // 2Top side
+        ball.y < paddle2.y + paddle2.h // 2Bottom side
     ) {
         ball.dir = !ball.dir;
         ball.degree = Math.random() * (70 + 70) - 70;
@@ -145,8 +141,7 @@ function checkScore() {
     if (p1Score === 5 || p2Score === 5) {
         gameState = "win";
         setTimeout(reset, 5000);
-    }
-    if (currentTime - roundStartTime >= 90000 && p1Score < 5 && p2Score < 5) {
+    } else if (currentTime - roundStartTime >= 90000) {
         gameState = "tie";
         setTimeout(reset, 5000);
     }
@@ -205,7 +200,7 @@ function reset() {
 }
 
 function ballReset() {
-    gameState = "";
+    gameState = "pause";
     roundStartTime = performance.now();
     if (ball.dir) {
         ball.x = 65;
@@ -223,5 +218,7 @@ function ballReset() {
         degree: ball.degree,
         rise: 0.1,
     }
-    setTimeout(() => {gameState = "gameLoop";}, 2000);
+    if (p1Score < 5 && p2Score < 5) {
+        setTimeout(() => {gameState = "gameLoop";}, 2000);
+    }
 }
